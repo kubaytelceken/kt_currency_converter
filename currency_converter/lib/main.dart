@@ -1,3 +1,4 @@
+import 'package:currency_converter/dashboardPage.dart';
 import 'package:flutter/material.dart';
 
 import 'dashboard.dart';
@@ -31,6 +32,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white, body: Dashboard());
+    return Material(
+      type: MaterialType.transparency,
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomInset: false,
+          body: DasboardPage(
+            currencyVal: 100,
+            convertedCurrency: 7.65,
+            currencyone: "TRY",
+            currencytwo: "USD",
+            isWhite: 1,
+          )),
+    );
   }
 }

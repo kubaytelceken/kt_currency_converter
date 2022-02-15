@@ -1,4 +1,5 @@
-import 'package:currency_converter/card.dart';
+import 'package:currency_converter/cardBottom.dart';
+import 'package:currency_converter/cardTop.dart';
 import 'package:currency_converter/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class _DashboardState extends State<Dashboard> {
     return Column(
       children: [
         Expanded(
-          child: CardContainer(
+          child: CardContainerTop(
             cardChild: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +61,7 @@ class _DashboardState extends State<Dashboard> {
                   width: 5.0)),
         ),
         Expanded(
-            child: CardContainer(
+            child: CardContainerBottom(
           cardChild: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,4 +1,10 @@
+import 'dart:ffi';
+
+import 'package:currency_converter/networking.dart';
 import 'package:flutter/material.dart';
+
+const apiKey = '21259ff2b7e13dc6a029ff7d8c40e410';
+const openWeatherMapURL = 'https://open.er-api.com/v6/latest';
 
 class CurrencyService {
   getCurrencyString(currency) {
@@ -17,5 +23,12 @@ class CurrencyService {
     if (currency == 'KWN') return 'Güney Kore Wonu';
     if (currency == 'MXN') return 'Meksika Pezosu';
     if (currency == 'RUB') return 'Rus Rublesi';
+  }
+
+  Future<dynamic> getCurrencyData(String currencyOne) async {
+    NetworkHelper networkHelper =
+        NetworkHelper('$openWeatherMapURL/$currencyOne');
+    var currencyData = await networkHelper.getData();
+    return currencyData;
   }
 }

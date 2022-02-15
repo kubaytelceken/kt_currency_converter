@@ -29,6 +29,35 @@ class DasboardPage extends StatefulWidget {
 class _DasboardPageState extends State<DasboardPage> {
   late double height;
   late double width;
+  double resultCurrency = 0;
+  final myController = TextEditingController(text: "100");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrencyData();
+  }
+
+  void getCurrencyData() async {
+    CurrencyService currencyService = CurrencyService();
+    var currencyData =
+        await currencyService.getCurrencyData(widget.currencyone);
+    print(currencyData);
+
+    UpdateUI(currencyData);
+  }
+
+  void UpdateUI(dynamic currData) {
+    setState(() {
+      print("DÜŞTÜ");
+
+      String exchangeName = widget.currencytwo;
+      double currencyValue = currData['rates']['$exchangeName'];
+      resultCurrency =
+          double.parse(myController.text.replaceAll(',', '.')) * currencyValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +84,37 @@ class _DasboardPageState extends State<DasboardPage> {
                         CurrencyService().getCurrencyString(widget.currencyone),
                         style: kSmallTextStyle,
                       ),
-                      Text(
-                        "100",
+                      TextFormField(
+                        controller: myController,
+                        textAlign: TextAlign.center,
                         style: kLargeTextStyle,
+                        cursorColor: Colors.white,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 2.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        onEditingComplete: () {
+                          getCurrencyData();
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                       ),
+                      // Text(
+                      //   "100",
+                      //   style: kLargeTextStyle,
+                      // ),
                       TextButton(
                         style: TextButton.styleFrom(
                           textStyle: kSmallUnderTextStyle,
@@ -106,16 +162,25 @@ class _DasboardPageState extends State<DasboardPage> {
                         },
                         child: Text(
                           widget.currencytwo,
-                          style: TextStyle(color: Colors.white),
+                          style: kSmallTextStyle,
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 2),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50.0))),
+                        child: Center(
+                          child: Text(
+                            resultCurrency.toStringAsFixed(2),
+                            style: kLargeTextStyle,
+                          ),
                         ),
                       ),
                       Text(
-                        "7,65",
-                        style: kLargeTextStyle,
-                      ),
-                      Text(
                         CurrencyService().getCurrencyString(widget.currencytwo),
-                        style: TextStyle(color: Colors.white),
+                        style: kSmallTextStyle,
                       )
                     ],
                   ),
@@ -130,20 +195,25 @@ class _DasboardPageState extends State<DasboardPage> {
           Positioned(
             left: width * .4,
             top: height * .5 - (width * .1),
-            child: Container(
-              width: width * .2,
-              height: width * .2,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/exchangeIcon.png"),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center),
-                  color: Colors.white,
-                  border: Border.all(
-                      color: Color(0XFF4E54C8),
-                      style: BorderStyle.solid,
-                      width: 5.0)),
+            child: GestureDetector(
+              onTap: () {
+                getCurrencyData();
+              },
+              child: Container(
+                width: width * .2,
+                height: height * .1,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/exchangeIcon.png"),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.center),
+                    color: Colors.white,
+                    border: Border.all(
+                        color: Color(0XFF4E54C8),
+                        style: BorderStyle.solid,
+                        width: 5.0)),
+              ),
             ),
           )
         ],
