@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:currency_converter/networking.dart';
 import 'package:flutter/material.dart';
 

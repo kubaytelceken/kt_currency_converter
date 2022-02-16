@@ -1,3 +1,4 @@
+import 'package:currency_converter/constants.dart';
 import 'package:currency_converter/dashboardPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,7 @@ class _OrangeCurrencyListPageState extends State<OrangeCurrencyListPage> {
         padding: EdgeInsets.only(left: 25.0, bottom: 20.0),
         child: Text(
           currencyName,
-          style: TextStyle(
-              fontFamily: 'Quicksand',
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
+          style: kSmallTextStyle,
         ),
       ),
     );
