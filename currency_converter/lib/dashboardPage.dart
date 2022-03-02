@@ -8,13 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'currency.dart';
 import 'package:awesome_button/awesome_button.dart';
+import 'package:intl/intl.dart';
 
 class DasboardPage extends StatefulWidget {
-  late final currencyVal;
-  late final convertedCurrency;
-  late final currencyone;
-  late final currencytwo;
-  late final isWhite;
+  dynamic? currencyVal;
+  dynamic? convertedCurrency;
+  dynamic? currencyone;
+  dynamic? currencytwo;
+  dynamic? isWhite;
 
   DasboardPage(
       {required this.currencyVal,
@@ -30,13 +31,14 @@ class DasboardPage extends StatefulWidget {
 class _DasboardPageState extends State<DasboardPage> {
   late double height;
   late double width;
+  late String _deger;
   double resultCurrency = 0;
-  final myController = TextEditingController(text: "100");
-
+  dynamic myController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    myController = TextEditingController(text: widget.currencyVal.toString());
     getCurrencyData();
   }
 
@@ -51,8 +53,6 @@ class _DasboardPageState extends State<DasboardPage> {
 
   void UpdateUI(dynamic currData) {
     setState(() {
-      print("DÜŞTÜ");
-
       String exchangeName = widget.currencytwo;
       double currencyValue = currData['rates']['$exchangeName'];
       resultCurrency =
@@ -60,6 +60,7 @@ class _DasboardPageState extends State<DasboardPage> {
     });
   }
 
+  NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -124,10 +125,18 @@ class _DasboardPageState extends State<DasboardPage> {
                           textStyle: kSmallUnderTextStyle,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => BlueCurrencyListPage(
-                                    currencyTwo: widget.currencytwo,
-                                  )));
+                          Navigator.pushReplacement(
+                              this.context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlueCurrencyListPage(
+                                        currencyTwo: widget.currencytwo,
+                                        currencyVal: widget.currencyVal,
+                                      )));
+
+                          // Navigator.of(context).push(CupertinoPageRoute(
+                          //     builder: (context) => BlueCurrencyListPage(
+                          //           currencyTwo: widget.currencytwo,
+                          //         )));
                         },
                         child: Text(
                           widget.currencyone,
@@ -159,10 +168,16 @@ class _DasboardPageState extends State<DasboardPage> {
                           textStyle: kSmallUnderTextStyle,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => OrangeCurrencyListPage(
-                                    currencyOne: widget.currencyone,
-                                  )));
+                          Navigator.pushReplacement(
+                              this.context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrangeCurrencyListPage(
+                                      currencyOne: widget.currencyone)));
+
+                          // Navigator.of(context).push(CupertinoPageRoute(
+                          //     builder: (context) => OrangeCurrencyListPage(
+                          //           currencyOne: widget.currencyone,
+                          //         )));
                         },
                         child: Text(
                           widget.currencytwo,
@@ -179,7 +194,8 @@ class _DasboardPageState extends State<DasboardPage> {
                                   BorderRadius.all(Radius.circular(50.0))),
                           child: Center(
                             child: Text(
-                              resultCurrency.toStringAsFixed(2),
+                              myFormat.format(resultCurrency),
+                              // resultCurrency.toStringAsFixed(2),
                               style: kLargeTextStyle,
                             ),
                           ),
@@ -209,6 +225,10 @@ class _DasboardPageState extends State<DasboardPage> {
               height: width * .2,
               width: width * .2,
               onTap: () {
+                var temp = widget.currencyone;
+
+                widget.currencyone = widget.currencytwo;
+                widget.currencytwo = temp;
                 getCurrencyData();
                 FocusManager.instance.primaryFocus?.unfocus();
               },

@@ -1,4 +1,5 @@
 import 'package:currency_converter/dashboardPage.dart';
+import 'package:currency_converter/splashScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'dashboard.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: SplashScreen(),
     );
   }
 }

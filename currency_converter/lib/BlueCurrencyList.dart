@@ -1,11 +1,13 @@
 import 'package:currency_converter/constants.dart';
+import 'package:currency_converter/dashboard.dart';
 import 'package:currency_converter/dashboardPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BlueCurrencyListPage extends StatefulWidget {
   late final currencyTwo;
-  BlueCurrencyListPage({required this.currencyTwo});
+  late final currencyVal;
+  BlueCurrencyListPage({required this.currencyTwo, required this.currencyVal});
 
   @override
   _BlueCurrencyListPageState createState() => _BlueCurrencyListPageState();
@@ -27,44 +29,80 @@ class _BlueCurrencyListPageState extends State<BlueCurrencyListPage> {
               },
             ),
           ),
-          body: ListView(
-            children: <Widget>[
-              getListItem('Türk Lirası', 'TRY'),
-              getListItem('Avustralya Doları', 'AUD'),
-              getListItem('Kanada Doları', 'CAD'),
-              getListItem('Yeni Zelanda Doları', 'NZD'),
-              getListItem('Japon Yeni', 'JPY'),
-              getListItem('İsviçre Frangı', 'CHF'),
-              getListItem('İngiliz Sterlini', 'GBP'),
-              getListItem('Euro', 'EUR'),
-              getListItem('Amerikan Doları', 'USD'),
-              getListItem('Çin Yuanı', 'CNY'),
-              getListItem('Brezilya Reali', 'BRL'),
-              getListItem('Hindistan Rupisi', 'INR'),
-              getListItem('Güney Kore Wonu', 'KWN'),
-              getListItem('Meksika Pezosu', 'MXN'),
-              getListItem('Rus Rublesi', 'RUB'),
-            ],
+          body: Container(
+            decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0XFF8F94FB),
+                Color(0XFF4E54C8),
+              ],
+            )),
+            child: ListView(
+              children: <Widget>[
+                getListItem('Türk Lirası (₺)', 'TRY', "turkiye"),
+                getListItem('Euro (€)', 'EUR', "avrupa"),
+                getListItem('Amerikan Doları (\$)', 'USD', "amerika"),
+                getListItem('İngiliz Sterlini (£)', 'GBP', "birlesik"),
+                getListItem('Avustralya Doları (\$)', 'AUD', "avustralya"),
+                getListItem('Kanada Doları (\$)', 'CAD', "kanada"),
+                getListItem('Yeni Zelanda Doları (\$)', 'NZD', "yenizelanda"),
+                getListItem('Japon Yeni (¥)', 'JPY', "japonya"),
+                getListItem('İsviçre Frangı (CHF)', 'CHF', "isvicre"),
+                getListItem('Çin Yuanı (¥)', 'CNY', "cin"),
+                getListItem('Brezilya Reali (R\$)', 'BRL', "brezilya"),
+                getListItem('Hindistan Rupisi (₹)', 'INR', "hindistan"),
+                getListItem('Güney Kore Wonu (₩)', 'KWN', "guneykore"),
+                getListItem('Meksika Pezosu (\$)', 'MXN', "meksika"),
+                getListItem('Rus Rublesi (₽)', 'RUB', "rusya"),
+              ],
+            ),
           )),
     );
   }
 
-  Widget getListItem(String currencyName, String currency) {
+  Widget getListItem(String currencyName, String currency, String image) {
     return InkWell(
       onTap: () {
+        // Navigator.pop(
+        //     context,
+        //     DasboardPage(
+        //         currencyVal: 0.0,
+        //         isWhite: true,
+        //         convertedCurrency: 0.0,
+        //         currencyone: currency,
+        //         currencytwo: widget.currencyTwo));
+
         Navigator.of(context).pushReplacement(CupertinoPageRoute(
             builder: (context) => DasboardPage(
-                currencyVal: 0.0,
+                currencyVal: widget.currencyVal,
                 isWhite: true,
-                convertedCurrency: 0.0,
+                convertedCurrency: widget.currencyVal,
                 currencyone: currency,
                 currencytwo: widget.currencyTwo)));
       },
       child: Padding(
         padding: EdgeInsets.only(left: 25.0, bottom: 20.0),
-        child: Text(
-          currencyName,
-          style: kSmallTextStyle,
+        child: Row(
+          children: [
+            Image(
+              image: AssetImage("assets/images/${image}.png"),
+              width: 20,
+              height: 20,
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Text(
+              currencyName,
+              style: kSmallTextStyle,
+            ),
+          ],
+          // child: Text(
+          //   currencyName,
+          //   style: kSmallTextStyle,
+          // ),
         ),
       ),
     );
